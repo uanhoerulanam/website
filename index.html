@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#080a11">
     <meta name="description" content="Ankraix Motion - Semua link penting di satu tempat.">
 
-    <title>Ankrai x Motion | All Links</title>
+    <title>Ankraix Motion | All Links</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -100,6 +100,13 @@
             background: linear-gradient(135deg, #00d2ff 0%, #ffffff 50%, #d900ff 100%);
             -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        /* ====== JUDUL DENGAN SPACING LEBIH LEGA ====== */
+        .profile-title {
+            letter-spacing: 0.16em;
+            line-height: 1.15;
+            word-spacing: 0.05em;
         }
 
         .avatar-glow {
@@ -268,7 +275,7 @@
 
         @media (max-width: 380px) {
             .avatar-glow { width: 128px; height: 128px; }
-            .profile-title { font-size: 20px; }
+            .profile-title { font-size: 18px; letter-spacing: 0.12em; }
             .link-label { font-size: 11px; }
             .social-circle { width: 46px; height: 46px; font-size: 19px; }
         }
@@ -285,14 +292,14 @@
 <body class="text-slate-100 min-h-screen font-sans relative antialiased selection:bg-axmPurple selection:text-white">
 
     <audio id="bg-music" loop preload="auto">
-        <source src="https://cdn.jsdelivr.net/gh/uanhoerulanam/index.html@main/backsound.mp3" type="audio/mpeg">
-        <source src="https://raw.githubusercontent.com/uanhoerulanam/index.html/main/backsound.mp3" type="audio/mpeg">
+        <source src="https://cdn.jsdelivr.net/gh/uanhoerulanam/website@main/backsound.mp3" type="audio/mpeg">
+        <source src="https://raw.githubusercontent.com/uanhoerulanam/website/main/backsound.mp3" type="audio/mpeg">
     </audio>
 
     <video id="bg-video" autoplay muted loop playsinline webkit-playsinline disablepictureinpicture preload="auto"
-        poster="https://raw.githubusercontent.com/uanhoerulanam/index.html/main/ToastAndroForever.png">
-        <source src="https://cdn.jsdelivr.net/gh/uanhoerulanam/index.html@main/Dark%20Blue%20Fire.mp4" type="video/mp4">
-        <source src="https://raw.githubusercontent.com/uanhoerulanam/index.html/main/Dark%20Blue%20Fire.mp4" type="video/mp4">
+        poster="https://raw.githubusercontent.com/uanhoerulanam/website/main/ToastAndroForever.png">
+        <source src="https://cdn.jsdelivr.net/gh/uanhoerulanam/website@main/Dark%20Blue%20Fire.mp4" type="video/mp4">
+        <source src="https://raw.githubusercontent.com/uanhoerulanam/website/main/Dark%20Blue%20Fire.mp4" type="video/mp4">
     </video>
 
     <div id="bg-overlay"></div>
@@ -327,22 +334,23 @@
             </div>
         </header>
 
-        <section class="text-center w-full mb-7 flex flex-col items-center">
+        <section class="text-center w-full mb-8 flex flex-col items-center">
 
-            <div class="avatar-glow mb-5">
+            <div class="avatar-glow mb-7">
                 <canvas id="spark-canvas" class="spark-canvas"></canvas>
                 <img id="axm-logo"
-                    src="https://raw.githubusercontent.com/uanhoerulanam/index.html/main/ToastAndroForever.png"
+                    src="https://raw.githubusercontent.com/uanhoerulanam/website/main/ToastAndroForever.png"
                     alt="Logo Ankraix Motion aXM"
                     class="avatar-image"
                     onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/uanhoerulanam/gambar-ankraixmotion-/main/as.png';">
             </div>
 
-            <h1 class="profile-title font-heading text-2xl md:text-3xl font-black tracking-wider text-axm-gradient mb-1 uppercase">
-                ANKRAIX MOTION
+            <!-- JUDUL: ANKRAI X MOTION -->
+            <h1 class="profile-title font-heading text-2xl md:text-3xl font-black text-axm-gradient mb-3 uppercase">
+                ANKRAI X MOTION
             </h1>
 
-            <p class="text-slate-300 text-xs md:text-sm font-semibold tracking-[0.15em] uppercase mb-5">
+            <p class="text-slate-300 text-xs md:text-sm font-semibold tracking-[0.25em] uppercase mb-6">
                 Follow My Social Media
             </p>
 
@@ -419,7 +427,7 @@
                 <i class="fa-solid fa-chevron-right link-arrow"></i>
             </a>
 
-            <!-- 7. WHATSAPP ADMIN -->
+            <!-- 7. CHAT ADMIN WHATSAPP -->
             <a href="https://wa.me/6285136446443" target="_blank" rel="noopener noreferrer" class="link-btn">
                 <div class="link-icon ic-ff">
                     <i class="fa-brands fa-whatsapp"></i>
@@ -432,7 +440,7 @@
 
         <footer class="mt-12 text-center text-xs text-slate-500 space-y-2">
             <p class="font-heading text-slate-400">
-                ANKRAIX MOTION &copy; <span id="year"></span>
+                ANKRAI X MOTION &copy; <span id="year"></span>
             </p>
             <p class="text-[11px] text-slate-600">All Links</p>
         </footer>
@@ -943,4 +951,4 @@
     </script>
 
 </body>
-  </html>
+    </html>
