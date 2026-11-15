@@ -20,9 +20,10 @@
   --glass: rgba(255,255,255,.06);
   --glass-line: rgba(255,255,255,.14);
   --grad: linear-gradient(90deg, var(--blue), var(--purple));
+  --sy: 0;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
   font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
@@ -63,6 +64,11 @@ main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  transition: background .3s, border-color .3s;
+}
+body.scrolling .nav {
+  background: rgba(255,255,255,.12);
+  border-color: rgba(255,255,255,.28);
 }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 600; }
 .dot {
@@ -104,6 +110,49 @@ main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
 .profile p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
 
 .socials { display: flex; justify-content: center; gap: 12px; }
+
+/* Efek kaca sentuh: dipakai tombol link dan ikon sosmed */
+.fx {
+  position: relative;
+  overflow: hidden;
+  transition: transform .2s, border-color .25s, box-shadow .25s, background .25s;
+}
+.fx > * { position: relative; z-index: 2; }
+
+/* Cahaya kaca mengikuti jari */
+.fx::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle 120px at var(--x, 50%) var(--y, 50%),
+    rgba(255,255,255,.30), rgba(110,140,255,.16) 45%, transparent 72%);
+  opacity: 0;
+  transition: opacity .4s ease;
+}
+.fx.touch::before { opacity: 1; transition: opacity .08s; }
+.fx.touch {
+  transform: scale(.97);
+  border-color: rgba(255,255,255,.38);
+  background: rgba(255,255,255,.12);
+}
+
+/* Kilau kaca bergerak mengikuti scroll */
+.fx::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: linear-gradient(115deg,
+    transparent 36%, rgba(255,255,255,.11) 47%, rgba(255,255,255,.04) 54%, transparent 66%);
+  background-size: 280px 100%;
+  background-repeat: repeat-x;
+  background-position: calc(var(--sy) * .4px) 0;
+}
+body.scrolling .fx { border-color: rgba(255,255,255,.26); }
+
 .social {
   width: 48px; height: 48px;
   border-radius: 50%;
@@ -113,12 +162,6 @@ main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
   text-decoration: none;
   border: 1px solid var(--glass-line);
   background: var(--glass);
-  transition: transform .2s, box-shadow .2s, border-color .2s;
-}
-.social:hover {
-  transform: translateY(-3px);
-  border-color: rgba(180,60,255,.6);
-  box-shadow: 0 8px 22px rgba(47,107,255,.3), 0 8px 22px rgba(180,60,255,.25);
 }
 
 /* Link */
@@ -131,12 +174,19 @@ main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
   border-radius: 16px;
   color: #fff;
   text-decoration: none;
-  transition: transform .2s, border-color .2s, box-shadow .2s;
 }
-.link:hover {
-  transform: translateY(-2px);
-  border-color: rgba(180,60,255,.6);
-  box-shadow: 0 10px 30px rgba(47,107,255,.2), 0 10px 30px rgba(180,60,255,.15);
+@media (hover: hover) {
+  .link:hover {
+    transform: translateY(-2px);
+    border-color: rgba(180,60,255,.6);
+    box-shadow: 0 10px 30px rgba(47,107,255,.2), 0 10px 30px rgba(180,60,255,.15);
+  }
+  .social:hover {
+    transform: translateY(-3px);
+    border-color: rgba(180,60,255,.6);
+    box-shadow: 0 8px 22px rgba(47,107,255,.3), 0 8px 22px rgba(180,60,255,.25);
+  }
+  .link:hover .go { color: #fff; transform: translateX(3px); }
 }
 .link:focus-visible, .icon-btn:focus-visible, .social:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
 .link .ic {
@@ -149,7 +199,6 @@ main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
 }
 .link .txt { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.3; }
 .link .go { color: var(--muted); font-size: 12px; transition: transform .2s, color .2s; }
-.link:hover .go { color: #fff; transform: translateX(3px); }
 
 .ic.gold  { background: linear-gradient(135deg, #ffd700, #ff8c00); }
 .ic.green { background: linear-gradient(135deg, #25d366, #128c7e); }
@@ -215,6 +264,7 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+  .fx::after { display: none; }
 }
 </style>
 </head>
@@ -252,52 +302,52 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
     <p>Follow my social media</p>
 
     <div class="socials">
-      <a class="social" href="https://www.tiktok.com/@ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a class="social" href="https://youtube.com/@ankraixmotion2007?si=QDzzEcPD17GMuGTo" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-      <a class="social" href="https://whatsapp.com/channel/0029VbC1J5S8kyyMKhJ1Na2w" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-      <a class="social" href="https://t.me/ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      <a class="social fx" href="https://www.tiktok.com/@ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a class="social fx" href="https://youtube.com/@ankraixmotion2007?si=QDzzEcPD17GMuGTo" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a class="social fx" href="https://whatsapp.com/channel/0029VbC1J5S8kyyMKhJ1Na2w" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a class="social fx" href="https://t.me/ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
     </div>
   </section>
 
   <section class="links">
 
-    <a class="link glass" href="https://anganteng.blogspot.com/2026/09/cara-dowload-aplikasinya.html?m=1" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://anganteng.blogspot.com/2026/09/cara-dowload-aplikasinya.html?m=1" target="_blank" rel="noopener noreferrer">
       <div class="ic"><i class="fa-solid fa-download"></i></div>
       <div class="txt">Tutorial Download APK</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://linkbio.co/8080105e2i7PS" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://linkbio.co/8080105e2i7PS" target="_blank" rel="noopener noreferrer">
       <div class="ic gold"><i class="fa-solid fa-crown"></i></div>
       <div class="txt">Buy Akun Premium 100% Amanah</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://drive.google.com/file/d/1pJvQqinwKMYOVFlUit_cnzhRKDIpA44B/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://drive.google.com/file/d/1pJvQqinwKMYOVFlUit_cnzhRKDIpA44B/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
       <div class="ic pink"><i class="fa-solid fa-heart"></i></div>
       <div class="txt">Donate</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://ankraixmotion.vercel.app" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://ankraixmotion.vercel.app" target="_blank" rel="noopener noreferrer">
       <div class="ic"><i class="fa-solid fa-globe"></i></div>
       <div class="txt">All My Social Media Accounts</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://linktr.ee/ankaixmotion" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://linktr.ee/ankaixmotion" target="_blank" rel="noopener noreferrer">
       <div class="ic green"><i class="fa-brands fa-android"></i></div>
       <div class="txt">List Aplikasi</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://sfl.gl/XLDIJ" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://sfl.gl/XLDIJ" target="_blank" rel="noopener noreferrer">
       <div class="ic orange"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
       <div class="txt">Cari Preset Alight Motion</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
-    <a class="link glass" href="https://wa.me/6285136446443" target="_blank" rel="noopener noreferrer">
+    <a class="link glass fx" href="https://wa.me/6285136446443" target="_blank" rel="noopener noreferrer">
       <div class="ic green"><i class="fa-brands fa-whatsapp"></i></div>
       <div class="txt">Chat Admin WhatsApp</div>
       <i class="fa-solid fa-chevron-right go"></i>
@@ -329,6 +379,50 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Efek kaca: sentuh */
+(function () {
+  const items = document.querySelectorAll('.fx');
+
+  function setPos(el, e) {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--x', (e.clientX - r.left) + 'px');
+    el.style.setProperty('--y', (e.clientY - r.top) + 'px');
+  }
+
+  items.forEach(el => {
+    el.addEventListener('pointerdown', e => {
+      setPos(el, e);
+      el.classList.add('touch');
+    });
+    el.addEventListener('pointermove', e => {
+      if (el.classList.contains('touch')) setPos(el, e);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
+      el.addEventListener(ev, () => el.classList.remove('touch'))
+    );
+  });
+})();
+
+/* Efek kaca: scroll */
+(function () {
+  const root = document.documentElement;
+  let ticking = false;
+  let stopTimer;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(() => {
+        root.style.setProperty('--sy', Math.round(window.scrollY));
+        ticking = false;
+      });
+    }
+    document.body.classList.add('scrolling');
+    clearTimeout(stopTimer);
+    stopTimer = setTimeout(() => document.body.classList.remove('scrolling'), 200);
+  }, { passive: true });
+})();
 
 /* Toast */
 let toastTimer;
