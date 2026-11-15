@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#05030d">
 <meta name="description" content="Ankraix Motion - Semua link penting di satu tempat.">
 <title>Ankraix Motion | All Links</title>
@@ -17,10 +17,10 @@
   --purple: #b43cff;
   --silver: #f2f4ff;
   --muted: #a9a6c4;
-  --glass: rgba(255,255,255,.06);
-  --glass-line: rgba(255,255,255,.14);
+  --glass-line: rgba(255,255,255,.16);
   --grad: linear-gradient(90deg, var(--blue), var(--purple));
   --sy: 0;
+  --v: 0;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -28,21 +28,41 @@
 body {
   font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
   color: var(--silver);
+  background: var(--bg);
   min-height: 100vh;
   overflow-x: hidden;
-  background:
-    radial-gradient(circle at 0% 0%, rgba(47,107,255,.32), transparent 45%),
-    radial-gradient(circle at 100% 100%, rgba(180,60,255,.30), transparent 45%),
-    var(--bg);
-  background-attachment: fixed;
 }
 
+/* Latar air bergerak (hanya transform, ringan) */
+.bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg i {
+  position: absolute;
+  width: 70vmax; height: 70vmax;
+  border-radius: 50%;
+  will-change: transform;
+  animation: drift 20s ease-in-out infinite alternate;
+}
+.bg i:nth-child(1) { top: -25vmax; left: -25vmax; background: radial-gradient(circle, rgba(47,107,255,.42), transparent 65%); }
+.bg i:nth-child(2) { bottom: -25vmax; right: -25vmax; background: radial-gradient(circle, rgba(180,60,255,.40), transparent 65%); animation-duration: 25s; animation-direction: alternate-reverse; }
+.bg i:nth-child(3) { top: 35%; left: 20%; width: 45vmax; height: 45vmax; background: radial-gradient(circle, rgba(90,90,255,.22), transparent 65%); animation-duration: 30s; }
+@keyframes drift {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(10vw,6vh) scale(1.12); }
+  100% { transform: translate(-6vw,12vh) scale(.95); }
+}
+
+/* Kaca cair */
 .glass {
-  background: var(--glass);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.15) 0%, rgba(255,255,255,.04) 45%, rgba(255,255,255,.07) 100%);
   border: 1px solid var(--glass-line);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 24px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.08);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  box-shadow:
+    0 8px 28px rgba(0,0,0,.32),
+    inset 0 1px 0 rgba(255,255,255,.38),
+    inset 0 -1px 0 rgba(255,255,255,.06),
+    inset 0 0 20px rgba(255,255,255,.04);
 }
 
 .grad-text {
@@ -52,93 +72,94 @@ body {
   color: transparent;
 }
 
-main { max-width: 480px; margin: 0 auto; padding: 14px 16px 30px; }
+main { max-width: 480px; margin: 0 auto; padding: 14px 16px 120px; }
+section { scroll-margin-top: 80px; }
 
-/* Navbar */
+/* Navbar atas */
 .nav {
   position: sticky;
   top: 12px;
   z-index: 10;
   padding: 10px 14px;
-  border-radius: 18px;
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: background .3s, border-color .3s;
+  transition: border-color .3s;
 }
-body.scrolling .nav {
-  background: rgba(255,255,255,.12);
-  border-color: rgba(255,255,255,.28);
-}
+body.scrolling .nav { border-color: rgba(255,255,255,.34); }
 .brand { display: flex; align-items: center; gap: 9px; font-size: 14px; font-weight: 600; }
-.dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  background: var(--blue);
-  box-shadow: 0 0 10px var(--blue);
-}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--blue); box-shadow: 0 0 10px var(--blue); }
 .actions { display: flex; gap: 8px; }
 .icon-btn {
   width: 38px; height: 38px;
-  border-radius: 12px;
+  border-radius: 13px;
   border: 1px solid var(--glass-line);
-  background: rgba(255,255,255,.05);
+  background: rgba(255,255,255,.06);
   color: var(--muted);
   font-size: 15px;
   cursor: pointer;
   transition: color .2s, background .2s, border-color .2s;
 }
-.icon-btn:hover { color: #fff; background: rgba(255,255,255,.12); }
-.icon-btn.playing { color: var(--blue); border-color: rgba(47,107,255,.6); background: rgba(47,107,255,.12); }
+.icon-btn:hover { color: #fff; background: rgba(255,255,255,.14); }
+.icon-btn.playing { color: var(--blue); border-color: rgba(47,107,255,.6); background: rgba(47,107,255,.14); }
 
 /* Profil */
-.profile { text-align: center; padding: 38px 0 26px; }
+.profile { text-align: center; padding: 38px 0 40px; min-height: 62vh; }
 .avatar {
   width: 128px; height: 128px;
   margin: 0 auto 20px;
   border-radius: 50%;
+  position: relative;
   box-shadow: -6px 0 22px rgba(47,107,255,.55), 6px 0 22px rgba(180,60,255,.55);
+}
+.avatar::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px solid rgba(255,255,255,.25);
+  animation: morph 7s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes morph {
+  0%,100% { border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; transform: rotate(0); }
+  50%     { border-radius: 58% 42% 46% 54% / 46% 56% 44% 54%; transform: rotate(90deg); }
 }
 .avatar img {
   width: 100%; height: 100%;
   border-radius: 50%;
   object-fit: cover;
   display: block;
-  border: 2px solid rgba(255,255,255,.18);
+  border: 2px solid rgba(255,255,255,.2);
   background: #0a0718;
 }
 .profile h1 { font-size: 26px; letter-spacing: .5px; margin-bottom: 6px; }
 .profile p { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
-
 .socials { display: flex; justify-content: center; gap: 12px; }
 
-/* Efek kaca sentuh: dipakai tombol link dan ikon sosmed */
+/* Efek kaca air: sentuh + scroll */
 .fx {
   position: relative;
   overflow: hidden;
-  transition: transform .2s, border-color .25s, box-shadow .25s, background .25s;
+  translate: 0 calc(var(--v) * 1px * (.5 + var(--i, 0) * .12));
+  transition: transform .2s, border-color .25s, box-shadow .25s;
 }
 .fx > * { position: relative; z-index: 2; }
 
-/* Cahaya kaca mengikuti jari */
 .fx::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle 120px at var(--x, 50%) var(--y, 50%),
-    rgba(255,255,255,.30), rgba(110,140,255,.16) 45%, transparent 72%);
+  background: radial-gradient(circle 130px at var(--x, 50%) var(--y, 50%),
+    rgba(255,255,255,.32), rgba(110,140,255,.16) 45%, transparent 72%);
   opacity: 0;
-  transition: opacity .4s ease;
+  transition: opacity .45s ease;
 }
 .fx.touch::before { opacity: 1; transition: opacity .08s; }
-.fx.touch {
-  transform: scale(.97);
-  border-color: rgba(255,255,255,.38);
-  background: rgba(255,255,255,.12);
-}
+.fx.touch { transform: scale(.97); border-color: rgba(255,255,255,.42); }
 
-/* Kilau kaca bergerak mengikuti scroll */
 .fx::after {
   content: "";
   position: absolute;
@@ -146,12 +167,29 @@ body.scrolling .nav {
   z-index: 1;
   pointer-events: none;
   background-image: linear-gradient(115deg,
-    transparent 36%, rgba(255,255,255,.11) 47%, rgba(255,255,255,.04) 54%, transparent 66%);
+    transparent 36%, rgba(255,255,255,.12) 47%, rgba(255,255,255,.04) 54%, transparent 66%);
   background-size: 280px 100%;
   background-repeat: repeat-x;
   background-position: calc(var(--sy) * .4px) 0;
 }
-body.scrolling .fx { border-color: rgba(255,255,255,.26); }
+body.scrolling .fx { border-color: rgba(255,255,255,.3); }
+
+/* Riak air */
+.ripple {
+  position: absolute;
+  width: 24px; height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,.55);
+  background: radial-gradient(circle, rgba(255,255,255,.18), transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+  animation: rip .8s cubic-bezier(.2,.6,.3,1) forwards;
+}
+@keyframes rip {
+  from { transform: scale(0); opacity: 1; }
+  to   { transform: scale(16); opacity: 0; }
+}
 
 .social {
   width: 48px; height: 48px;
@@ -160,18 +198,17 @@ body.scrolling .fx { border-color: rgba(255,255,255,.26); }
   color: #fff;
   font-size: 20px;
   text-decoration: none;
-  border: 1px solid var(--glass-line);
-  background: var(--glass);
 }
 
 /* Link */
-.links { display: grid; gap: 12px; }
+.section-title { font-size: 15px; font-weight: 600; margin: 8px 4px 14px; color: var(--muted); }
+.links { display: grid; gap: 12px; margin-bottom: 40px; }
 .link {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 13px 16px 13px 13px;
-  border-radius: 16px;
+  border-radius: 18px;
   color: #fff;
   text-decoration: none;
 }
@@ -179,38 +216,85 @@ body.scrolling .fx { border-color: rgba(255,255,255,.26); }
   .link:hover {
     transform: translateY(-2px);
     border-color: rgba(180,60,255,.6);
-    box-shadow: 0 10px 30px rgba(47,107,255,.2), 0 10px 30px rgba(180,60,255,.15);
+    box-shadow: 0 10px 30px rgba(47,107,255,.22), 0 10px 30px rgba(180,60,255,.16), inset 0 1px 0 rgba(255,255,255,.38);
   }
-  .social:hover {
-    transform: translateY(-3px);
-    border-color: rgba(180,60,255,.6);
-    box-shadow: 0 8px 22px rgba(47,107,255,.3), 0 8px 22px rgba(180,60,255,.25);
-  }
+  .social:hover { transform: translateY(-3px); border-color: rgba(180,60,255,.6); }
   .link:hover .go { color: #fff; transform: translateX(3px); }
 }
-.link:focus-visible, .icon-btn:focus-visible, .social:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
+.link:focus-visible, .icon-btn:focus-visible, .social:focus-visible, .dock button:focus-visible { outline: 2px solid var(--silver); outline-offset: 2px; }
 .link .ic {
   width: 42px; height: 42px;
-  border-radius: 12px;
+  border-radius: 13px;
   display: flex; align-items: center; justify-content: center;
   font-size: 17px;
   flex-shrink: 0;
   background: var(--grad);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35);
 }
 .link .txt { flex: 1; font-size: 14px; font-weight: 600; line-height: 1.3; }
 .link .go { color: var(--muted); font-size: 12px; transition: transform .2s, color .2s; }
+.ic.gold   { background: linear-gradient(135deg, #ffd700, #ff8c00); }
+.ic.green  { background: linear-gradient(135deg, #25d366, #128c7e); }
+.ic.pink   { background: linear-gradient(135deg, #ff4d94, var(--purple)); }
+.ic.orange { background: linear-gradient(135deg, #ff6b00, #ff0033); }
 
-.ic.gold  { background: linear-gradient(135deg, #ffd700, #ff8c00); }
-.ic.green { background: linear-gradient(135deg, #25d366, #128c7e); }
-.ic.pink  { background: linear-gradient(135deg, #ff4d94, var(--purple)); }
-.ic.orange{ background: linear-gradient(135deg, #ff6b00, #ff0033); }
+/* Kontak */
+.contact { padding-bottom: 10px; }
+.contact .note { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0 4px 14px; }
 
 footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; line-height: 1.7; }
+
+/* Dock lensa */
+.dock {
+  position: fixed;
+  left: 50%;
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 30;
+  width: min(92vw, 360px);
+  padding: 6px;
+  border-radius: 999px;
+  display: flex;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  --k: 0;
+}
+.dock .lens {
+  position: absolute;
+  top: 6px; bottom: 6px; left: 6px;
+  width: calc((100% - 12px) / 3);
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 140% at 30% 0%, rgba(255,255,255,.4), rgba(255,255,255,.08) 55%),
+    linear-gradient(90deg, rgba(47,107,255,.35), rgba(180,60,255,.35));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -2px 6px rgba(255,255,255,.12), 0 4px 16px rgba(80,90,255,.35);
+  transform: translateX(calc(var(--k) * 100%));
+  transition: transform .55s cubic-bezier(.34,1.45,.5,1), scale .25s;
+  pointer-events: none;
+}
+.dock.dragging .lens { transition: scale .25s; scale: 1.14 1.22; }
+.dock button {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  padding: 9px 0 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  cursor: pointer;
+  transition: color .25s;
+}
+.dock button i { font-size: 16px; }
+.dock button.on { color: #fff; }
 
 /* Toast */
 #toast {
   position: fixed;
-  bottom: 24px; left: 50%;
+  bottom: 96px; left: 50%;
   transform: translate(-50%, 20px);
   width: calc(100% - 32px); max-width: 360px;
   padding: 12px 16px;
@@ -240,7 +324,7 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
   position: relative;
   width: 100%; max-width: 300px;
   padding: 26px 22px;
-  border-radius: 24px;
+  border-radius: 26px;
   text-align: center;
   transform: scale(.95);
   transition: transform .25s;
@@ -248,28 +332,20 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
 #qr-modal.open .modal { transform: scale(1); }
 .modal h3 { font-size: 16px; margin-bottom: 6px; }
 .modal p { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-.modal .close {
-  position: absolute; top: 10px; right: 10px;
-  background: none; border: 0; color: var(--muted);
-  font-size: 18px; padding: 8px; cursor: pointer;
-}
-#qrcode {
-  background: #fff;
-  padding: 14px;
-  border-radius: 16px;
-  display: flex; justify-content: center;
-  min-height: 198px;
-  margin-bottom: 14px;
-}
+.modal .close { position: absolute; top: 10px; right: 10px; background: none; border: 0; color: var(--muted); font-size: 18px; padding: 8px; cursor: pointer; }
+#qrcode { background: #fff; padding: 14px; border-radius: 16px; display: flex; justify-content: center; min-height: 198px; margin-bottom: 14px; }
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+  .fx { translate: none; }
   .fx::after { display: none; }
 }
 </style>
 </head>
 
 <body>
+
+<div class="bg"><i></i><i></i><i></i></div>
 
 <audio id="bg-music" loop preload="auto">
   <source src="https://cdn.jsdelivr.net/gh/uanhoerulanam/website@main/backsound.mp3" type="audio/mpeg">
@@ -293,7 +369,7 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
     </div>
   </nav>
 
-  <section class="profile">
+  <section id="home" class="profile">
     <div class="avatar">
       <img src="logo.jpg" alt="Logo Ankraix Motion aXM"
         onerror="this.onerror=null; this.src='https://raw.githubusercontent.com/uanhoerulanam/website/main/ToastAndroForever.png';">
@@ -302,65 +378,80 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
     <p>Follow my social media</p>
 
     <div class="socials">
-      <a class="social fx" href="https://www.tiktok.com/@ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
-      <a class="social fx" href="https://youtube.com/@ankraixmotion2007?si=QDzzEcPD17GMuGTo" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-      <a class="social fx" href="https://whatsapp.com/channel/0029VbC1J5S8kyyMKhJ1Na2w" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-      <a class="social fx" href="https://t.me/ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+      <a class="social glass fx" href="https://www.tiktok.com/@ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+      <a class="social glass fx" href="https://youtube.com/@ankraixmotion2007?si=QDzzEcPD17GMuGTo" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      <a class="social glass fx" href="https://whatsapp.com/channel/0029VbC1J5S8kyyMKhJ1Na2w" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+      <a class="social glass fx" href="https://t.me/ankraixmotion" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
     </div>
   </section>
 
-  <section class="links">
+  <section id="links">
+    <h2 class="section-title">Link penting</h2>
+    <div class="links">
 
-    <a class="link glass fx" href="https://anganteng.blogspot.com/2026/09/cara-dowload-aplikasinya.html?m=1" target="_blank" rel="noopener noreferrer">
-      <div class="ic"><i class="fa-solid fa-download"></i></div>
-      <div class="txt">Tutorial Download APK</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://anganteng.blogspot.com/2026/09/cara-dowload-aplikasinya.html?m=1" target="_blank" rel="noopener noreferrer">
+        <div class="ic"><i class="fa-solid fa-download"></i></div>
+        <div class="txt">Tutorial Download APK</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
-    <a class="link glass fx" href="https://linkbio.co/8080105e2i7PS" target="_blank" rel="noopener noreferrer">
-      <div class="ic gold"><i class="fa-solid fa-crown"></i></div>
-      <div class="txt">Buy Akun Premium 100% Amanah</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://linkbio.co/8080105e2i7PS" target="_blank" rel="noopener noreferrer">
+        <div class="ic gold"><i class="fa-solid fa-crown"></i></div>
+        <div class="txt">Buy Akun Premium 100% Amanah</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
-    <a class="link glass fx" href="https://drive.google.com/file/d/1pJvQqinwKMYOVFlUit_cnzhRKDIpA44B/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
-      <div class="ic pink"><i class="fa-solid fa-heart"></i></div>
-      <div class="txt">Donate</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://drive.google.com/file/d/1pJvQqinwKMYOVFlUit_cnzhRKDIpA44B/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+        <div class="ic pink"><i class="fa-solid fa-heart"></i></div>
+        <div class="txt">Donate</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
-    <a class="link glass fx" href="https://ankraixmotion.vercel.app" target="_blank" rel="noopener noreferrer">
-      <div class="ic"><i class="fa-solid fa-globe"></i></div>
-      <div class="txt">All My Social Media Accounts</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://ankraixmotion.vercel.app" target="_blank" rel="noopener noreferrer">
+        <div class="ic"><i class="fa-solid fa-globe"></i></div>
+        <div class="txt">All My Social Media Accounts</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
-    <a class="link glass fx" href="https://linktr.ee/ankaixmotion" target="_blank" rel="noopener noreferrer">
-      <div class="ic green"><i class="fa-brands fa-android"></i></div>
-      <div class="txt">List Aplikasi</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://linktr.ee/ankaixmotion" target="_blank" rel="noopener noreferrer">
+        <div class="ic green"><i class="fa-brands fa-android"></i></div>
+        <div class="txt">List Aplikasi</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
-    <a class="link glass fx" href="https://sfl.gl/XLDIJ" target="_blank" rel="noopener noreferrer">
-      <div class="ic orange"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-      <div class="txt">Cari Preset Alight Motion</div>
-      <i class="fa-solid fa-chevron-right go"></i>
-    </a>
+      <a class="link glass fx" href="https://sfl.gl/XLDIJ" target="_blank" rel="noopener noreferrer">
+        <div class="ic orange"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+        <div class="txt">Cari Preset Alight Motion</div>
+        <i class="fa-solid fa-chevron-right go"></i>
+      </a>
 
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2 class="section-title">Kontak</h2>
+    <p class="note">Ada pertanyaan soal produk atau pesanan? Chat admin langsung lewat WhatsApp.</p>
     <a class="link glass fx" href="https://wa.me/6285136446443" target="_blank" rel="noopener noreferrer">
       <div class="ic green"><i class="fa-brands fa-whatsapp"></i></div>
       <div class="txt">Chat Admin WhatsApp</div>
       <i class="fa-solid fa-chevron-right go"></i>
     </a>
 
+    <footer>
+      Ankrai X Motion © <span id="year"></span><br>
+      All Links
+    </footer>
   </section>
 
-  <footer>
-    Ankrai X Motion © <span id="year"></span><br>
-    All Links
-  </footer>
-
 </main>
+
+<!-- Navbar lensa -->
+<div class="dock glass" id="dock" role="tablist" aria-label="Navigasi halaman">
+  <div class="lens" aria-hidden="true"></div>
+  <button type="button" role="tab" class="on" aria-label="Beranda"><i class="fa-solid fa-house"></i>Beranda</button>
+  <button type="button" role="tab" aria-label="Link"><i class="fa-solid fa-link"></i>Link</button>
+  <button type="button" role="tab" aria-label="Kontak"><i class="fa-solid fa-headset"></i>Kontak</button>
+</div>
 
 <div id="toast" class="glass" role="status">
   <b id="toast-title">Berhasil disalin</b>
@@ -380,48 +471,119 @@ footer { text-align: center; margin-top: 34px; font-size: 12px; color: #77749a; 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-/* Efek kaca: sentuh */
+/* Urutan efek bergelombang saat scroll */
+document.querySelectorAll('.fx').forEach((el, i) => el.style.setProperty('--i', i % 8));
+
+/* Sentuh: cahaya kaca + riak air */
 (function () {
-  const items = document.querySelectorAll('.fx');
-
-  function setPos(el, e) {
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--x', (e.clientX - r.left) + 'px');
-    el.style.setProperty('--y', (e.clientY - r.top) + 'px');
-  }
-
-  items.forEach(el => {
+  document.querySelectorAll('.fx').forEach(el => {
+    function setPos(e) {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--x', (e.clientX - r.left) + 'px');
+      el.style.setProperty('--y', (e.clientY - r.top) + 'px');
+    }
     el.addEventListener('pointerdown', e => {
-      setPos(el, e);
+      setPos(e);
       el.classList.add('touch');
+      const r = el.getBoundingClientRect();
+      const rip = document.createElement('span');
+      rip.className = 'ripple';
+      rip.style.left = (e.clientX - r.left) + 'px';
+      rip.style.top = (e.clientY - r.top) + 'px';
+      rip.addEventListener('animationend', () => rip.remove());
+      el.appendChild(rip);
     });
-    el.addEventListener('pointermove', e => {
-      if (el.classList.contains('touch')) setPos(el, e);
-    });
+    el.addEventListener('pointermove', e => { if (el.classList.contains('touch')) setPos(e); });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(ev =>
       el.addEventListener(ev, () => el.classList.remove('touch'))
     );
   });
 })();
 
-/* Efek kaca: scroll */
+/* Scroll: goyang kenyal + kilau, berhenti sendiri saat diam */
 (function () {
   const root = document.documentElement;
-  let ticking = false;
-  let stopTimer;
+  let last = window.scrollY, vel = 0, raf = null, stopTimer;
+
+  function loop() {
+    const y = window.scrollY;
+    vel += ((y - last) - vel) * 0.25;
+    last = y;
+    const v = Math.max(-40, Math.min(40, vel));
+    root.style.setProperty('--v', (v * 0.18).toFixed(2));
+    root.style.setProperty('--sy', Math.round(y));
+    if (Math.abs(vel) > 0.05) {
+      raf = requestAnimationFrame(loop);
+    } else {
+      root.style.setProperty('--v', 0);
+      raf = null;
+    }
+  }
 
   window.addEventListener('scroll', () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(() => {
-        root.style.setProperty('--sy', Math.round(window.scrollY));
-        ticking = false;
-      });
-    }
+    if (!raf) raf = requestAnimationFrame(loop);
     document.body.classList.add('scrolling');
     clearTimeout(stopTimer);
-    stopTimer = setTimeout(() => document.body.classList.remove('scrolling'), 200);
+    stopTimer = setTimeout(() => document.body.classList.remove('scrolling'), 220);
   }, { passive: true });
+})();
+
+/* Navbar lensa: ketuk atau geser */
+(function () {
+  const dock = document.getElementById('dock');
+  const btns = dock.querySelectorAll('button');
+  const ids = ['home', 'links', 'contact'];
+  let dragging = false;
+
+  function setActive(k) {
+    dock.style.setProperty('--k', k);
+    btns.forEach((b, i) => b.classList.toggle('on', i === Math.round(k)));
+  }
+  function posToK(e) {
+    const r = dock.getBoundingClientRect();
+    const w = (r.width - 12) / 3;
+    return Math.max(0, Math.min(2, (e.clientX - r.left - 6) / w - 0.5));
+  }
+  function go(i) {
+    document.getElementById(ids[i]).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  dock.addEventListener('pointerdown', e => {
+    dragging = true;
+    dock.classList.add('dragging');
+    dock.setPointerCapture(e.pointerId);
+    setActive(posToK(e));
+  });
+  dock.addEventListener('pointermove', e => { if (dragging) setActive(posToK(e)); });
+  function end(e) {
+    if (!dragging) return;
+    dragging = false;
+    dock.classList.remove('dragging');
+    const i = Math.round(posToK(e));
+    setActive(i);
+    go(i);
+  }
+  dock.addEventListener('pointerup', end);
+  dock.addEventListener('pointercancel', () => { dragging = false; dock.classList.remove('dragging'); });
+
+  /* Lensa ikut posisi scroll */
+  function onScroll() {
+    if (dragging) return;
+    const bottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 6;
+    let idx = 0;
+    if (bottom) idx = 2;
+    else ids.forEach((id, i) => {
+      if (document.getElementById(id).getBoundingClientRect().top <= window.innerHeight * 0.4) idx = i;
+    });
+    setActive(idx);
+  }
+  let t = false;
+  window.addEventListener('scroll', () => {
+    if (t) return;
+    t = true;
+    requestAnimationFrame(() => { onScroll(); t = false; });
+  }, { passive: true });
+  onScroll();
 })();
 
 /* Toast */
@@ -565,4 +727,4 @@ document.addEventListener('keydown', e => {
 </script>
 
 </body>
-</html>
+                       </html>
